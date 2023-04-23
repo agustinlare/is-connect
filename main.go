@@ -6,13 +6,16 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 )
 
 func main() {
-	webhookUrl := "https://discord.com/api/webhooks/123456789012345678/abcdefghijklmnopqrstuvwxyz"
+	webhookUrl := os.Getenv("WEBHOOK_URL")
 	internetLostTime := time.Now()
 	internetIsLost := false
+	message := "test"
+	sendDiscordNotification(webhookUrl, message)
 
 	for {
 		if checkInternetConnection() {
@@ -20,7 +23,7 @@ func main() {
 				internetIsLost = false
 				internetReturnTime := time.Now()
 				internetLostDuration := internetReturnTime.Sub(internetLostTime)
-				if internetLostDuration.Minutes() >= 5 {
+				if internetLostDuration.Minutes() >= 1 {
 					message := fmt.Sprintf("Internet connection is back after %v minutes", internetLostDuration.Minutes())
 					sendDiscordNotification(webhookUrl, message)
 				}

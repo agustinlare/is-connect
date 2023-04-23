@@ -1,3 +1,3 @@
 # Is-connected
 
-Check if there is internet connection and notify when recovers
+Checks internet status. If connection is lost once it's back send's you a notification via discord if that time was greater than 1 minute.
