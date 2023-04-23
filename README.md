@@ -4,4 +4,8 @@ Checks internet status. If connection is lost once it's back send's you a notifi
 
 ## Deamon
 
-cp is-connect.service /etc/systemd/system/
+```=bash
+sudo cp is-connect.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl start is-connect
+```
