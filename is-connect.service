@@ -1,0 +1,10 @@
+[Unit]
+Description=Is-Connect
+
+[Service]
+ExecStart=/home/notadmin/is-connect/is-connect
+Restart=always
+Enviroment=WEBHOOK_URL=""
+
+[Install]
+WantedBy=multi-user.target

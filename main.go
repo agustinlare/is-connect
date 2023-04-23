@@ -11,11 +11,13 @@ import (
 )
 
 func main() {
-	webhookUrl := os.Getenv("WEBHOOK_URL")
 	internetLostTime := time.Now()
 	internetIsLost := false
-	message := "test"
-	sendDiscordNotification(webhookUrl, message)
+	webhookUrl := os.Getenv("WEBHOOK_URL")
+
+	if webhookUrl == "" {
+		panic("WEBHOOK_URL environment variable is not set or is empty")
+	}
 
 	for {
 		if checkInternetConnection() {
