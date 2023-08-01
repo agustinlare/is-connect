@@ -4,7 +4,7 @@ Description=Is-Connect
 [Service]
 ExecStart=/home/notadmin/is-connect/is-connect
 Restart=always
-Enviroment=WEBHOOK_URL=""
+Enviroment=WEBHOOK_URL="https://discord.com/api/webhooks/1099471573699792948/Q-H9lAFEcukHRZ3qKuyasrHM3seoCkY3aVTy1NVnzSXemT4Ez_6PVR8bM5Cv3kkLxRdf"
 
 [Install]
 WantedBy=multi-user.target
