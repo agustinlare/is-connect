@@ -20,6 +20,8 @@ func main() {
 		panic("WEBHOOK_URL environment variable is not set or is empty")
 	}
 
+	log.Println("Starting is-connect service")
+
 	for {
 		if checkInternetConnection() {
 			if internetIsLost {
@@ -49,6 +51,7 @@ func main() {
 			}
 		}
 		time.Sleep(10 * time.Second)
+		fmt.Sprintf("INFO: Hay internet, son las %s", time.Now() )
 	}
 }
 

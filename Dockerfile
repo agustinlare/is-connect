@@ -8,9 +8,9 @@ RUN go mod download
 RUN go mod verify
 RUN CGO_ENABLED=0 go build -o /is-connect .
 
-# FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian11
 # FROM golang:1.17-bullseye
 
-# COPY --from=base /is-connect .
+COPY --from=base /is-connect .
 
-# CMD ["./is-connect"]
+CMD ["./is-connect"]
