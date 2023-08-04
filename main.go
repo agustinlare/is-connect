@@ -34,8 +34,8 @@ func main() {
 				log.Println("Internet return at", internetReturnTime.Format("2006-01-02 15:04:05"))
 				internetLostDuration := internetReturnTime.Sub(internetLostTime)
 
-				// if internetLostDuration.Minutes() >= 1 {
-				if true {
+				if internetLostDuration.Minutes() >= 1 {
+					// if true {
 					message := fmt.Sprintf("Internet connection is back after %v minutes", internetLostDuration.Minutes())
 					sendDiscordNotification(webhookUrl, message)
 				}
@@ -51,7 +51,7 @@ func main() {
 			}
 		}
 		time.Sleep(10 * time.Second)
-		fmt.Sprintf("INFO: Hay internet, son las %s", time.Now() )
+		log.Printf("INFO: Internet check %s", time.Now().Format("2006-01-02 15:04:05"))
 	}
 }
 
