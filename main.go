@@ -20,7 +20,7 @@ func main() {
 		panic("WEBHOOK_URL environment variable is not set or is empty")
 	}
 
-	log.Println("Starting is-connect service")
+	fmt.Println("Starting is-connect service")
 
 	for {
 		if checkInternetConnection() {
@@ -29,14 +29,11 @@ func main() {
 
 				internetIsLost = false
 				internetReturnTime := time.Now()
-				log.SetPrefix("INFO: ")
-				log.SetFlags(log.LstdFlags | log.Lshortfile)
-				log.Println("Internet return at", internetReturnTime.Format("2006-01-02 15:04:05"))
+				fmt.Println("STATUS UP: Internet return at", internetReturnTime.Format("2006-01-02 15:04:05"))
 				internetLostDuration := internetReturnTime.Sub(internetLostTime)
 
 				if internetLostDuration.Minutes() >= 1 {
-					// if true {
-					message := fmt.Sprintf("Internet connection is back after %v minutes", internetLostDuration.Minutes())
+					message := fmt.Sprintf("STATUS UP: Internet was lost by %v minutes", internetLostDuration.Minutes())
 					sendDiscordNotification(webhookUrl, message)
 				}
 			}
@@ -45,22 +42,27 @@ func main() {
 			if !internetIsLost {
 				internetIsLost = true
 				internetLostTime = time.Now()
-				log.SetPrefix("WARNING: ")
-				log.SetFlags(log.LstdFlags | log.Lshortfile)
-				log.Println("Internet was lost at", internetLostTime.Format("2006-01-02 15:04:05"))
+				fmt.Println("STATUS DOWN: Internet was lost at", internetLostTime.Format("2006-01-02 15:04:05"))
 			}
 		}
+		fmt.Println("Internet check", time.Now().Format("2006-01-02 15:04:05"))
 		time.Sleep(10 * time.Second)
-		log.Printf("INFO: Internet check %s", time.Now().Format("2006-01-02 15:04:05"))
 	}
 }
 
 func checkInternetConnection() bool {
-	resp, err := http.Get("https://www.google.com")
+	website := "https://google.com"
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+
+	resp, err := client.Get(website)
 	if err != nil {
 		return false
 	}
+
 	defer resp.Body.Close()
+
 	return true
 }
 
