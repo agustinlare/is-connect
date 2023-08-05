@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"log/syslog"
 	"net/http"
 	"net/url"
 	"os"
@@ -25,8 +24,6 @@ func main() {
 	for {
 		if checkInternetConnection() {
 			if internetIsLost {
-				logToSyslog()
-
 				internetIsLost = false
 				internetReturnTime := time.Now()
 				fmt.Println("STATUS UP: Internet return at", internetReturnTime.Format("2006-01-02 15:04:05"))
@@ -73,29 +70,15 @@ func sendDiscordNotification(webhookUrl, message string) {
 
 	resp, err := http.PostForm(webhookUrl, formData)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	fmt.Println(string(body))
-}
-
-func logToSyslog() {
-	syslog, err := syslog.New(syslog.LOG_INFO, "is-connect")
-	if err != nil {
-		log.Fatal("Failed to connect to syslog:", err)
-	}
-
-	defer syslog.Close()
-
-	_, err = syslog.Write([]byte("Site is unreacheble"))
-	if err != nil {
-		log.Fatal("Failed to write to syslog:", err)
-	}
 }
